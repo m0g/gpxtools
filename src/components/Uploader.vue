@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import {xml2json} from 'xml-js'
+
 export default {
   name: 'Uploader',
   data() {
@@ -39,31 +41,14 @@ export default {
 
       reader.onload = () => {
         const base64 = reader.result.split(',').pop();
-        console.log(base64);
-        console.log(atob(base64));
+        const xml = atob(base64);
+        const gpx = xml2json(xml);
+        console.log(gpx);
+        // const parser = new DOMParser();
+        // const xmlDoc = parser.parseFromString(xml, "text/xml");
+        // console.log(xmlDoc)
       }
     },
-    filesChange(fieldName, fileList) {
-      // handle file changes
-      const formData = new FormData();
-
-      if (!fileList.length) return;
-
-      // append the files to FormData
-      Array
-        .from(Array(fileList.length).keys())
-        .map(x => {
-          formData.append(fieldName, fileList[x], fileList[x].name);
-        });
-
-      console.log(fileList)
-      console.log(formData)
-      const reader = new FileReader();
-      const file = reader.readAsDataURL(fileList[0]);
-      console.log(file);
-      // save it
-      // this.save(formData);
-    }
   }
 }
 </script>
