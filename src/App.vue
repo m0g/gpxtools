@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Uploader v-if="!gpx" @uploaded="onUploadComplete" />
-    <Map />
+    <Map v-if="gpx" v-bind:gpx="gpx" />
   </div>
 </template>
 
@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     onUploadComplete(value) {
-      console.log(value);
       this.gpx = value;
     }
   }

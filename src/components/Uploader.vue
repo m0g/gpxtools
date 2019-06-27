@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import {xml2json} from 'xml-js'
 
 export default {
   name: 'Uploader',
@@ -42,7 +41,11 @@ export default {
       reader.onload = () => {
         const base64 = reader.result.split(',').pop();
         const xml = atob(base64);
-        const gpx = JSON.parse(xml2json(xml));
+        const parser = new DOMParser();
+        const gpx = parser.parseFromString(xml, 'application/xml')
+
+        // console.log(gpx)
+        // console.log(gpx.querySelectorAll('trkpt'))
 
         this.$emit('uploaded', gpx);
       }
