@@ -1,9 +1,9 @@
 <template>
   <main>
-    <Map :bounds="bounds" :polyline="polyline" />
+    <Map :bounds="bounds" :polylines="polylines" />
     <div>
       <p>Distance: {{distance}} kms</p>
-      <p>Total points: {{polyline.latlngs.length}}</p>
+      <p>Total points: {{latlngs.length}}</p>
     </div>
   </main>
 </template>
@@ -18,33 +18,46 @@ export default {
   props: ['gpx'],
   components: { Map },
   data() {
-    const polyline = { latlngs: [], color: 'green' };
+    let latlngs = [];
+    let polylines = [];
     let bounds = null;
     let distance = 0;
 
     if (this.gpx) {
-      // Create polyline
-      const points = this.gpx.querySelectorAll('trkseg trkpt')
+      const segments = this.gpx.querySelectorAll('trkseg');
 
-      for (const point of points) {
-        polyline.latlngs.push([
-          point.getAttribute('lat'),
-          point.getAttribute('lon'),
-        ])
+      for (const segment of segments) {
+        const polyline = { latlngs: [], color: 'green' };
+
+        // Create polyline
+        const points = segment.querySelectorAll('trkpt')
+
+        for (const point of points) {
+          const latlng = [
+            point.getAttribute('lat'),
+            point.getAttribute('lon'),
+          ]
+
+          polyline.latlngs.push(latlng)
+          latlngs.push(latlng)
+        }
+
+        polylines.push(polyline)
+
+        // Calculate distances
+        // TODO: the distance is wrong, fix it
+        distance += length(lineString(polyline.latlngs));
       }
-
       // Define bounds
-      bounds = new LatLngBounds(polyline.latlngs);
+      bounds = new LatLngBounds(latlngs);
 
-      // Calculate distances
-      // TODO: the distance is wrong, fix it
-      distance = length(lineString(polyline.latlngs));
     }
 
     return {
-      polyline,
+      polylines,
       bounds,
-      distance
+      distance,
+      latlngs,
     }
   }
 }

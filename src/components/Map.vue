@@ -8,6 +8,8 @@
   >
     <l-tile-layer :url="url" :attribution="attribution" />
     <l-polyline
+      v-for="(polyline, index) in polylines"
+      :key="index"
       :lat-lngs="polyline.latlngs"
       :color="polyline.color">
     </l-polyline>
@@ -20,7 +22,7 @@ import {LMap, LTileLayer, LPolyline } from 'vue2-leaflet';
 
 export default {
   name: 'Map',
-  props: ['polyline', 'bounds'],
+  props: ['polylines', 'bounds'],
   data() {
     return {
       zoom: 13,
@@ -28,11 +30,6 @@ export default {
       url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(47.41322, -1.219482),
-      withTooltip: latLng(47.41422, -1.250482),
-      currentZoom: 11.5,
-      currentCenter: latLng(47.41322, -1.219482),
-      showParagraph: false,
       mapOptions: {
         zoomSnap: 0.5
       },
