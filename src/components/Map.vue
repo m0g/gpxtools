@@ -3,6 +3,7 @@
     :zoom="zoom"
     :center="center"
     :options="mapOptions"
+    :bounds="bounds"
     style="width: 80vw; height: 80vh"
   >
     <l-tile-layer :url="url" :attribution="attribution" />
@@ -14,7 +15,7 @@
 </template>
 
 <script>
-import { latLng } from "leaflet";
+import { latLng, LatLngBounds } from "leaflet";
 import {LMap, LTileLayer, LPolyline } from 'vue2-leaflet';
 
 export default {
@@ -22,13 +23,11 @@ export default {
   props: ['gpx'],
   data() {
     const polyline = { latlngs: [], color: 'green' };
+    let bounds = null;
 
-    console.log('data', this.gpx);
     if (this.gpx) {
       const points = this.gpx.querySelectorAll('trkpt')
-      // console.log(points);
 
-      // console.log(points[1].getAttribute('lat'))
       for (const point of points) {
         polyline.latlngs.push([
           point.getAttribute('lat'),
@@ -36,8 +35,9 @@ export default {
         ])
       }
 
-      console.log(polyline.latlngs)
+      bounds = new LatLngBounds(polyline.latlngs);
     }
+
     return {
       zoom: 13,
       center: latLng(47.41322, -1.219482),
@@ -53,6 +53,7 @@ export default {
         zoomSnap: 0.5
       },
       polyline,
+      bounds,
     };
   },
   components: {

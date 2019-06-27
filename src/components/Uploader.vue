@@ -44,9 +44,6 @@ export default {
         const parser = new DOMParser();
         const gpx = parser.parseFromString(xml, 'application/xml')
 
-        // console.log(gpx)
-        // console.log(gpx.querySelectorAll('trkpt'))
-
         this.$emit('uploaded', gpx);
       }
     },
