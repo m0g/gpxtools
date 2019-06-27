@@ -42,11 +42,9 @@ export default {
       reader.onload = () => {
         const base64 = reader.result.split(',').pop();
         const xml = atob(base64);
-        const gpx = xml2json(xml);
-        console.log(gpx);
-        // const parser = new DOMParser();
-        // const xmlDoc = parser.parseFromString(xml, "text/xml");
-        // console.log(xmlDoc)
+        const gpx = JSON.parse(xml2json(xml));
+
+        this.$emit('uploaded', gpx);
       }
     },
   }

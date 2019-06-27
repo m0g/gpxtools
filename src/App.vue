@@ -1,16 +1,30 @@
 <template>
   <div id="app">
-    <Uploader />
+    <Uploader v-if="!gpx" @uploaded="onUploadComplete" />
+    <Map />
   </div>
 </template>
 
 <script>
 import Uploader from './components/Uploader.vue'
+import Map from './components/Map.vue'
 
 export default {
   name: 'app',
   components: {
-    Uploader
+    Uploader,
+    Map,
+  },
+  data() {
+    return {
+      gpx: null
+    }
+  },
+  methods: {
+    onUploadComplete(value) {
+      console.log(value);
+      this.gpx = value;
+    }
   }
 }
 </script>
