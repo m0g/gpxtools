@@ -1,22 +1,28 @@
 <template>
-  <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-    <h1>Upload your GPX track</h1>
-    <div class="dropbox">
-      <input 
-        type="file" 
-        :name="uploadFieldName" 
-        :disabled="isSaving" 
-        @change="processGPX($event)"
-        accept="application/gpx+xml" 
-        class="input-file">
-        <p v-if="isInitial">
-          Drag your file(s) here to begin<br> or click to browse
-        </p>
-        <p v-if="isSaving">
-          Uploading {{ fileCount }} files...
-        </p>
+<section class="hero is-link is-fullheight-with-navbar">
+  <div class="hero-body">
+    <div class="container">
+      <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+        <h1>Upload your GPX track</h1>
+        <div class="dropbox">
+          <input 
+            type="file" 
+            :name="uploadFieldName" 
+            :disabled="isSaving" 
+            @change="processGPX($event)"
+            accept="application/gpx+xml" 
+            class="input-file">
+            <p v-if="isInitial">
+              Drag your file(s) here to begin<br> or click to browse
+            </p>
+            <p v-if="isSaving">
+              Uploading {{ fileCount }} files...
+            </p>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
+</section>
 </template>
 
 <script>

@@ -3,6 +3,8 @@ import App from './App.vue'
 import { Icon }  from 'leaflet'
 
 import 'leaflet/dist/leaflet.css'
+import 'bulma/css/bulma.css'
+import './style.css'
 
 // this part resolve an issue where the markers would not appear
 delete Icon.Default.prototype._getIconUrl;

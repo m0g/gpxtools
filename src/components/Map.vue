@@ -1,57 +1,27 @@
 <template>
-  <section>
-    <div>
-      <p>Distance: {{distance}} kms</p>
-      <p>Total points: {{polyline.latlngs.length}}</p>
-    </div>
-    <l-map
-      :zoom="zoom"
-      :center="center"
-      :options="mapOptions"
-      :bounds="bounds"
-      style="width: 80vw; height: 80vh"
-    >
-      <l-tile-layer :url="url" :attribution="attribution" />
-      <l-polyline
-        :lat-lngs="polyline.latlngs"
-        :color="polyline.color">
-      </l-polyline>
-    </l-map>
-  </section>
+  <l-map
+    :zoom="zoom"
+    :center="center"
+    :options="mapOptions"
+    :bounds="bounds"
+    style="width: 100vw; height: 70vh"
+  >
+    <l-tile-layer :url="url" :attribution="attribution" />
+    <l-polyline
+      :lat-lngs="polyline.latlngs"
+      :color="polyline.color">
+    </l-polyline>
+  </l-map>
 </template>
 
 <script>
-import { latLng, LatLngBounds } from "leaflet";
+import { latLng } from "leaflet";
 import {LMap, LTileLayer, LPolyline } from 'vue2-leaflet';
-import { lineString, length } from '@turf/turf'
 
 export default {
   name: 'Map',
-  props: ['gpx'],
+  props: ['polyline', 'bounds'],
   data() {
-    const polyline = { latlngs: [], color: 'green' };
-    let bounds = null;
-    let distance = 0;
-
-    if (this.gpx) {
-      // Create polyline
-      const points = this.gpx.querySelectorAll('trkseg trkpt')
-
-      for (const point of points) {
-        polyline.latlngs.push([
-          point.getAttribute('lat'),
-          point.getAttribute('lon'),
-        ])
-      }
-
-      // Define bounds
-      bounds = new LatLngBounds(polyline.latlngs);
-
-      // Calculate distances
-      // TODO: the distance is wrong, fix it
-      distance = length(lineString(polyline.latlngs));
-    }
-
     return {
       zoom: 13,
       center: latLng(47.41322, -1.219482),
@@ -66,16 +36,12 @@ export default {
       mapOptions: {
         zoomSnap: 0.5
       },
-      polyline,
-      bounds,
-      distance,
     };
   },
   components: {
     LMap,
     LTileLayer,
     LPolyline
-    // LMarker
   },
   watch: {
     gpx: (newVal, oldVal) => {
