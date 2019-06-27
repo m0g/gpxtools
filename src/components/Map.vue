@@ -1,22 +1,29 @@
 <template>
-  <l-map
-    :zoom="zoom"
-    :center="center"
-    :options="mapOptions"
-    :bounds="bounds"
-    style="width: 80vw; height: 80vh"
-  >
-    <l-tile-layer :url="url" :attribution="attribution" />
-    <l-polyline
-      :lat-lngs="polyline.latlngs"
-      :color="polyline.color">
-    </l-polyline>
-  </l-map>
+  <section>
+    <div>
+      <p>Distance: {{distance}} kms</p>
+      <p>Total points: {{polyline.latlngs.length}}</p>
+    </div>
+    <l-map
+      :zoom="zoom"
+      :center="center"
+      :options="mapOptions"
+      :bounds="bounds"
+      style="width: 80vw; height: 80vh"
+    >
+      <l-tile-layer :url="url" :attribution="attribution" />
+      <l-polyline
+        :lat-lngs="polyline.latlngs"
+        :color="polyline.color">
+      </l-polyline>
+    </l-map>
+  </section>
 </template>
 
 <script>
 import { latLng, LatLngBounds } from "leaflet";
 import {LMap, LTileLayer, LPolyline } from 'vue2-leaflet';
+import { lineString, length } from '@turf/turf'
 
 export default {
   name: 'Map',
@@ -24,9 +31,11 @@ export default {
   data() {
     const polyline = { latlngs: [], color: 'green' };
     let bounds = null;
+    let distance = 0;
 
     if (this.gpx) {
-      const points = this.gpx.querySelectorAll('trkpt')
+      // Create polyline
+      const points = this.gpx.querySelectorAll('trkseg trkpt')
 
       for (const point of points) {
         polyline.latlngs.push([
@@ -35,7 +44,12 @@ export default {
         ])
       }
 
+      // Define bounds
       bounds = new LatLngBounds(polyline.latlngs);
+
+      // Calculate distances
+      // TODO: the distance is wrong, fix it
+      distance = length(lineString(polyline.latlngs));
     }
 
     return {
@@ -54,6 +68,7 @@ export default {
       },
       polyline,
       bounds,
+      distance,
     };
   },
   components: {
