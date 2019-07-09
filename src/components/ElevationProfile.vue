@@ -6,7 +6,7 @@
 import Highcharts from 'highcharts'
 export default {
   name: 'ElevationProfile',
-  props: ['distance', 'latlngs', 'elevations'],
+  props: ['distance', 'latlngs', 'elevations', 'title'],
 
   data() {
     let maxEle = 0;
@@ -32,7 +32,12 @@ export default {
       maxEle,
       profile,
       chartOptions: {
-        title: { text: 'Elevation profile' },
+        title: { 
+          text: this.title
+        },
+        subtitle: {
+          text: `${this.distance ? this.distance.toFixed(2) : '0'} kms`
+        },
         chart: {
           type: 'area',
           zoomType: 'x',

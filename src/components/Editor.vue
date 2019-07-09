@@ -6,6 +6,7 @@
       :polylines="polylines" />
     <ElevationProfile 
       @hover="onHover"
+      :title="title"
       :distance="distance" 
       :latlngs="latlngs" 
       :elevations="elevations" />
@@ -28,9 +29,11 @@ export default {
     let bounds = null;
     let distance = 0;
     let elevations = [];
+    let title = '';
 
     if (this.gpx) {
       const segments = this.gpx.querySelectorAll('trkseg');
+      title = this.gpx.querySelector('trk name').textContent
 
       for (const segment of segments) {
         const polyline = { latlngs: [], color: 'green' };
@@ -53,8 +56,10 @@ export default {
         polylines.push(polyline)
 
         // Calculate distances
-        // TODO: the distance is wrong, fix it
-        distance += length(lineString(polyline.latlngs));
+        // For some reason this is required by turf.js
+        // https://github.com/Turfjs/turf/issues/843
+        const reversedPolyline = polyline.latlngs.map(p => [p[1], p[0]]);
+        distance += length(lineString(reversedPolyline));
       }
       // Define bounds
       bounds = new LatLngBounds(latlngs);
@@ -68,6 +73,7 @@ export default {
       distance,
       latlngs,
       elevations,
+      title,
     }
   },
   methods: {
