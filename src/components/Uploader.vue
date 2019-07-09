@@ -13,7 +13,7 @@
             accept="application/gpx+xml" 
             class="input-file">
             <p v-if="isInitial">
-              Drag your file(s) here to begin<br> or click to browse
+              Drag your GPX file(s) here to begin<br> or click to browse
             </p>
             <p v-if="isSaving">
               Uploading {{ fileCount }} files...
