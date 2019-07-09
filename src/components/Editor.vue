@@ -1,22 +1,20 @@
 <template>
   <main>
     <Map :bounds="bounds" :polylines="polylines" />
-    <div>
-      <p>Distance: {{distance}} kms</p>
-      <p>Total points: {{latlngs.length}}</p>
-    </div>
+    <ElevationProfile :distance="distance" :latlngs="latlngs" />
   </main>
 </template>
 
 <script>
 import { LatLngBounds } from "leaflet";
 import { lineString, length } from '@turf/turf'
-import Map from './Map';
+import Map from './Map'
+import ElevationProfile from './ElevationProfile'
 
 export default {
   name: 'Editor',
   props: ['gpx'],
-  components: { Map },
+  components: { Map, ElevationProfile },
   data() {
     let latlngs = [];
     let polylines = [];
