@@ -41,7 +41,7 @@ export default {
             point.getAttribute('lon'),
           ]
 
-          elevations.push(points[0].children[0].textContent)
+          elevations.push(parseFloat(point.children[0].textContent))
           polyline.latlngs.push(latlng)
           latlngs.push(latlng)
         }
