@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import Highcharts from 'highcharts'
 export default {
   name: 'ElevationProfile',
   props: ['distance', 'latlngs', 'elevations'],
@@ -30,8 +31,25 @@ export default {
       maxEle,
       chartOptions: {
         title: { text: 'Elevation profile' },
+        chart: {
+          type: 'area',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift',
+          scrollablePlotArea: {
+              minWidth: 600
+          }
+        },
         series: [{
-          data: profile
+          data: profile,
+           lineColor: Highcharts.getOptions().colors[1],
+        color: Highcharts.getOptions().colors[2],
+        fillOpacity: 0.5,
+        name: 'Elevation',
+        marker: {
+            enabled: false
+        },
+        threshold: null
         }]
       }}
   },
