@@ -22,13 +22,15 @@ export default {
       for (let i = 0; i < this.elevations.length; i++) {
         profile.push([
           this.distance / this.elevations.length * i,
-          this.elevations[i]
+          this.elevations[i],
+          i
         ])
       }
     }
 
     return { 
       maxEle,
+      profile,
       chartOptions: {
         title: { text: 'Elevation profile' },
         chart: {
@@ -42,17 +44,42 @@ export default {
         },
         series: [{
           data: profile,
-           lineColor: Highcharts.getOptions().colors[1],
-        color: Highcharts.getOptions().colors[2],
-        fillOpacity: 0.5,
-        name: 'Elevation',
-        marker: {
+          lineColor: Highcharts.getOptions().colors[1],
+          color: Highcharts.getOptions().colors[2],
+          fillOpacity: 0.5,
+          name: 'Elevation',
+          marker: {
             enabled: false
-        },
-        threshold: null
-        }]
-      }}
+          },
+          threshold: null
+        }],
+        plotOptions: {
+          series: {
+            point: {
+              events: {
+                mouseOver: this.onMouseOver
+              }
+            }
+          }
+        }
+      }
+    }
   },
+
+  methods: {
+    onMouseOver(e) {
+      const x = e.target.options.x
+      let step = 0;
+
+      for (let i = 0; i < this.profile.length; i++) {
+        if (x === this.profile[i][0]) {
+          step = i;
+        }
+      }
+
+      this.$emit('hover', step);
+    }
+  }
 }
 </script>
 

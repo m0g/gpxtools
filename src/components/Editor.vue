@@ -1,7 +1,11 @@
 <template>
   <main>
-    <Map :bounds="bounds" :polylines="polylines" />
+    <Map 
+      :bounds="bounds"
+      :hover-pos="hoverPos"
+      :polylines="polylines" />
     <ElevationProfile 
+      @hover="onHover"
       :distance="distance" 
       :latlngs="latlngs" 
       :elevations="elevations" />
@@ -58,11 +62,17 @@ export default {
     }
 
     return {
+      hoverPos: null,
       polylines,
       bounds,
       distance,
       latlngs,
       elevations,
+    }
+  },
+  methods: {
+    onHover(step) {
+      this.hoverPos = this.latlngs[step]
     }
   }
 }

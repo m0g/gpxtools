@@ -13,16 +13,17 @@
       :lat-lngs="polyline.latlngs"
       :color="polyline.color">
     </l-polyline>
+    <l-marker v-if="hoverPos" :lat-lng="hoverPos" />
   </l-map>
 </template>
 
 <script>
 import { latLng } from "leaflet";
-import {LMap, LTileLayer, LPolyline } from 'vue2-leaflet';
+import {LMap, LTileLayer, LPolyline, LMarker } from 'vue2-leaflet';
 
 export default {
   name: 'Map',
-  props: ['polylines', 'bounds'],
+  props: ['polylines', 'bounds', 'hoverPos'],
   data() {
     return {
       zoom: 13,
@@ -38,12 +39,8 @@ export default {
   components: {
     LMap,
     LTileLayer,
-    LPolyline
+    LPolyline,
+    LMarker,
   },
-  watch: {
-    gpx: (newVal, oldVal) => {
-      console.log(newVal, oldVal);
-    }
-  }
 }
 </script>
