@@ -1,11 +1,5 @@
 <template>
-  <section>
-    <span>{{maxEle}}</span>
-    <trend
-      :data="elevations"
-      :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
-      smooth />
-  </section>
+    <highcharts id="container" :options="chartOptions"></highcharts>
 </template>
 
 <script>
@@ -15,6 +9,7 @@ export default {
 
   data() {
     let maxEle = 0;
+    let profile = [];
 
     if (this.elevations) {
       for (const elevation of this.elevations) {
@@ -22,24 +17,31 @@ export default {
           maxEle = elevation
         }
       }
+
+      for (let i = 0; i < this.elevations.length; i++) {
+        profile.push([
+          this.distance / this.elevations.length * i,
+          this.elevations[i]
+        ])
+      }
     }
 
-    return { maxEle }
+    return { 
+      maxEle,
+      chartOptions: {
+        title: { text: 'Elevation profile' },
+        series: [{
+          data: profile
+        }]
+      }}
   },
 }
 </script>
 
 <style scoped>
-  section {
-    position: relative;
+  #container {
+    position: absolute;
     width: 100%;
     height: 30vh;
-  }
-
-  svg {
-    width: 100%;
-    height: 90%;
-    position: absolute;
-    top: 0;
   }
 </style>
