@@ -1,9 +1,9 @@
 <template>
   <svg>
     <g class="labels x-labels">
-      <text x="100" y="60">0</text>
-      <text x="350" y="60">{{distance / 2 }}</text>
-      <text x="600" y="60">{{distance}}</text>
+      <text x="100" y="100">0</text>
+      <text x="350" y="100">{{distance / 2 }}</text>
+      <text x="600" y="100">{{distance}}</text>
     </g>
     <g class="labels y-labels">
       <text x="80" y="20">{{maxEle}}</text>
@@ -49,7 +49,7 @@ export default {
     }
 
     return { maxEle, pointsStr }
-  }
+  },
 }
 </script>
 
