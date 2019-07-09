@@ -1,7 +1,10 @@
 <template>
   <main>
     <Map :bounds="bounds" :polylines="polylines" />
-    <ElevationProfile :distance="distance" :latlngs="latlngs" />
+    <ElevationProfile 
+      :distance="distance" 
+      :latlngs="latlngs" 
+      :elevations="elevations" />
   </main>
 </template>
 
@@ -20,6 +23,7 @@ export default {
     let polylines = [];
     let bounds = null;
     let distance = 0;
+    let elevations = [];
 
     if (this.gpx) {
       const segments = this.gpx.querySelectorAll('trkseg');
@@ -30,12 +34,14 @@ export default {
         // Create polyline
         const points = segment.querySelectorAll('trkpt')
 
+        console.log(points[0].children[0].textContent)
         for (const point of points) {
           const latlng = [
             point.getAttribute('lat'),
             point.getAttribute('lon'),
           ]
 
+          elevations.push(points[0].children[0].textContent)
           polyline.latlngs.push(latlng)
           latlngs.push(latlng)
         }
@@ -56,6 +62,7 @@ export default {
       bounds,
       distance,
       latlngs,
+      elevations,
     }
   }
 }

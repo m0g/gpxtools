@@ -1,12 +1,15 @@
 <template>
   <section>
-    <div>
-      <p>Distance: {{distance}} kms</p>
-      <p>Total points: {{latlngs.length}}</p>
-    </div>
     <svg>
-      <g class="x axis"></g>
-      <g class="y axis"></g>
+      <g class="labels x-labels">
+        <text x="100" y="60">0</text>
+        <text x="350" y="60">250</text>
+        <text x="600" y="60">500</text>
+      </g>
+      <g class="labels y-labels">
+        <text x="80" y="20">10</text>
+        <text x="80" y="50">0</text>
+      </g>
     </svg>
   </section>
 </template>
@@ -18,8 +21,8 @@ export default {
 }
 </script>
 
-<style>
-  /* svg {
+<style scoped>
+  svg {
     width: 100%;
-  } */
+  }
 </style>
