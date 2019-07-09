@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import { Icon }  from 'leaflet'
+import Trend from "vuetrend"
 
 import 'leaflet/dist/leaflet.css'
 import 'bulma/css/bulma.css'
@@ -16,6 +17,8 @@ Icon.Default.mergeOptions({
 });
 
 Vue.config.productionTip = false
+
+Vue.use(Trend)
 
 new Vue({
   render: h => h(App),

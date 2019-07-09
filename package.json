@@ -14,6 +14,7 @@
     "leaflet": "^1.5.1",
     "vue": "^2.6.10",
     "vue2-leaflet": "^2.1.1",
+    "vuetrend": "^0.3.4",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
