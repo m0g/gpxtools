@@ -39,6 +39,8 @@ export default {
   },
   methods: {
     processGPX(event) {
+      this.isInitial = false;
+      this.isSaving = true;
       const file = event.target.files[0];
       const reader = new FileReader();
 
