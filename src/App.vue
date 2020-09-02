@@ -14,7 +14,7 @@
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
-          <button v-if="gpx" class="button is-primary">
+          <button v-if="gpx" class="button is-primary" @click="exportGPX()">
             Export
           </button>
         </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { saveAs } from 'file-saver'
 import Uploader from './components/Uploader.vue'
 import Editor from './components/Editor.vue'
 
@@ -43,6 +44,12 @@ export default {
   methods: {
     onUploadComplete(value) {
       this.gpx = value;
+    },
+    exportGPX() {
+      var oSerializer = new XMLSerializer();
+      var sXML = oSerializer.serializeToString(this.gpx);
+      var blob = new Blob([sXML], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, "track.gpx");
     }
   }
 }
