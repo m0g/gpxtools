@@ -41,7 +41,6 @@ export default {
         // Create polyline
         const points = segment.querySelectorAll('trkpt')
 
-        console.log(points[0].children[0].textContent)
         for (const point of points) {
           const latlng = [
             point.getAttribute('lat'),

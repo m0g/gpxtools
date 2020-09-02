@@ -12,6 +12,13 @@
           <span aria-hidden="true"></span>
         </a>
       </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <button v-if="gpx" class="button is-primary">
+            Export
+          </button>
+        </div>
+      </div>
     </nav>
     <Uploader v-if="!gpx" @uploaded="onUploadComplete" />
     <Editor v-if="gpx" v-bind:gpx="gpx" />
