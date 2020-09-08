@@ -10,6 +10,7 @@
             :name="uploadFieldName" 
             :disabled="isSaving" 
             @change="processGPX($event)"
+            multiple="true"
             accept="application/gpx+xml" 
             class="input-file">
             <p v-if="isInitial">
@@ -26,6 +27,21 @@
 </template>
 
 <script>
+const parseUploadedFile = async file => {
+  const reader = new FileReader();
+
+  reader.readAsDataURL(file);
+
+  return await new Promise((resolve) => {
+    reader.onload = () => {
+      const base64 = reader.result.split(',').pop();
+      const xml = atob(base64);
+      const parser = new DOMParser();
+      
+      resolve(parser.parseFromString(xml, 'application/xml'))
+    }
+  });
+};
 
 export default {
   name: 'Uploader',
@@ -38,22 +54,28 @@ export default {
     }
   },
   methods: {
-    processGPX(event) {
+    async processGPX(event) {
       this.isInitial = false;
       this.isSaving = true;
-      const file = event.target.files[0];
-      const reader = new FileReader();
 
-      reader.readAsDataURL(file);
+      const files = event.target.files;
+      let tracks = [];
 
-      reader.onload = () => {
-        const base64 = reader.result.split(',').pop();
-        const xml = atob(base64);
-        const parser = new DOMParser();
-        const gpx = parser.parseFromString(xml, 'application/xml')
-
-        this.$emit('uploaded', gpx);
+      for (const file of files) {
+        tracks.push(await parseUploadedFile(file));
       }
+
+      const gpx = tracks.shift();
+
+      for (const track of tracks) {
+        const segments = track.querySelectorAll('trkseg');
+
+        for (const segment of segments) {
+          gpx.querySelector('trk').appendChild(segment)
+        }
+      }
+
+      this.$emit('uploaded', gpx);
     },
   }
 }
