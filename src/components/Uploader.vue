@@ -11,7 +11,7 @@
             :disabled="isSaving" 
             @change="processGPX($event)"
             multiple="true"
-            accept="application/gpx+xml" 
+            accept=".gpx"
             class="input-file">
             <p v-if="isInitial">
               Drag your GPX file(s) here to begin<br> or click to browse
