@@ -43,6 +43,35 @@ const parseUploadedFile = async file => {
   });
 };
 
+const mergeTracks = tracks => {
+  const gpx = tracks[0];
+  let segments = [];
+
+  for (const track of tracks) {
+    segments = segments.concat(Array.from(
+      track.querySelectorAll('trkseg')
+    ));
+  }
+
+  const segmentsSorted = segments.sort((a, b) => {
+    const timeA = a.querySelector('time').textContent;
+    const timeB = b.querySelector('time').textContent;
+
+    return timeA > timeB;
+  })
+
+  // Remove existing nodes of the first file
+  for (const segment of gpx.querySelectorAll('trkseg')) {
+    segment.remove();
+  }
+
+  for (const segment of segmentsSorted) {
+    gpx.querySelector('trk').appendChild(segment)
+  }
+
+  return gpx;
+}
+
 export default {
   name: 'Uploader',
   data() {
@@ -65,15 +94,7 @@ export default {
         tracks.push(await parseUploadedFile(file));
       }
 
-      const gpx = tracks.shift();
-
-      for (const track of tracks) {
-        const segments = track.querySelectorAll('trkseg');
-
-        for (const segment of segments) {
-          gpx.querySelector('trk').appendChild(segment)
-        }
-      }
+      const gpx = mergeTracks(tracks);
 
       this.$emit('uploaded', gpx);
     },
